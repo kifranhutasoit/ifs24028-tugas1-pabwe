@@ -1,0 +1,426 @@
+/* ==========================================================
+   Kuis Dasar HTML dan CSS
+   Daftar isi: 1. Variabel  2. Dasar  3. Kartu  4. Layar awal
+               5. Layar soal  6. Pilihan  7. Umpan balik
+               8. Layar hasil  9. Responsif dan aksesibilitas
+   ========================================================== */
+
+/* ---------- 1. Variabel warna dan font ---------- */
+:root {
+  --latar: #e8ecf7;
+  --kartu: #ffffff;
+  --tinta: #14213d;
+  --tinta-lembut: #4b5671;
+  --garis: #d3d9ea;
+  --aksen: #3346d3;
+  --aksen-gelap: #2536a8;
+  --segmen: #dce1f0;
+
+  --benar: #0b7a55;
+  --benar-latar: #e5f5ee;
+  --salah: #b8322a;
+  --salah-latar: #fce9e7;
+  --waktu: #8a5200;
+  --waktu-latar: #fff1d6;
+
+  --font-utama: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-kode: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+
+/* ---------- 2. Dasar ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Atribut hidden harus selalu menyembunyikan elemen,
+   walaupun elemen itu punya display: grid atau flex */
+[hidden] {
+  display: none !important;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background-color: var(--latar);
+  color: var(--tinta);
+  font-family: var(--font-utama);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+code {
+  padding: 0.1em 0.35em;
+  border-radius: 6px;
+  background-color: rgba(20, 33, 61, 0.08);
+  font-family: var(--font-kode);
+  font-size: 0.88em;
+}
+
+/* ---------- 3. Kartu ---------- */
+.kartu {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 640px;
+  padding: clamp(20px, 5vw, 36px);
+  background-color: var(--kartu);
+  border: 1px solid var(--garis);
+  border-radius: 16px;
+  box-shadow: 0 24px 40px -28px rgba(20, 33, 61, 0.45);
+}
+
+/* Garis waktu di tepi atas kartu */
+.jalur-waktu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background-color: var(--segmen);
+}
+
+.isi-waktu {
+  height: 100%;
+  width: 100%;
+  background-color: var(--aksen);
+}
+
+.isi-waktu.mendesak {
+  background-color: var(--salah);
+}
+
+/* Tombol utama dipakai di semua layar */
+.tombol {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px 20px;
+  font: inherit;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: var(--aksen);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.tombol:hover {
+  background-color: var(--aksen-gelap);
+}
+
+.tombol:focus-visible,
+.opsi:focus-visible {
+  outline: 3px solid var(--aksen);
+  outline-offset: 3px;
+}
+
+.catatan {
+  margin-top: 16px;
+  font-size: 0.95rem;
+  color: var(--tinta-lembut);
+}
+
+/* ---------- 4. Layar awal ---------- */
+#layar-mulai h1 {
+  font-size: clamp(2rem, 7vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.pengantar {
+  margin-top: 16px;
+  max-width: 52ch;
+  color: var(--tinta-lembut);
+}
+
+.info {
+  margin-top: 20px;
+  padding-left: 20px;
+}
+
+.info li + li {
+  margin-top: 4px;
+}
+
+/* ---------- 5. Layar soal ---------- */
+.kepala-soal {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.nomor-soal {
+  font-weight: 700;
+}
+
+.sisa-waktu {
+  font-family: var(--font-kode);
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--tinta-lembut);
+}
+
+.sisa-waktu.mendesak {
+  color: var(--salah);
+}
+
+/* Kotak-kotak kecil penanda kemajuan */
+.segmen {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.segmen-butir {
+  flex: 1;
+  height: 10px;
+  border-radius: 4px;
+  background-color: var(--segmen);
+}
+
+.segmen-butir.aktif {
+  background-color: var(--aksen);
+}
+
+.segmen-butir.benar {
+  background-color: var(--benar);
+}
+
+.segmen-butir.salah {
+  background-color: var(--salah);
+}
+
+.segmen-butir.waktu {
+  background-color: #e0a100;
+}
+
+.pertanyaan {
+  margin-top: 24px;
+  font-size: clamp(1.25rem, 4.5vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* ---------- 6. Pilihan jawaban ---------- */
+.pilihan {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.opsi {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 16px;
+  font: inherit;
+  text-align: left;
+  color: var(--tinta);
+  background-color: var(--kartu);
+  border: 2px solid var(--garis);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.opsi:hover:not(:disabled) {
+  border-color: var(--aksen);
+  background-color: #f3f5fe;
+}
+
+.lencana {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background-color: #eceffa;
+  font-family: var(--font-kode);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Pilihan berisi kode ditulis dengan font monospace */
+.teks-opsi.kode {
+  font-family: var(--font-kode);
+  font-size: 0.95rem;
+}
+
+/* Setelah dijawab */
+.opsi:disabled {
+  cursor: default;
+  color: var(--tinta);
+}
+
+.opsi:disabled:not(.benar):not(.salah) {
+  opacity: 0.55;
+}
+
+.opsi.benar {
+  border-color: var(--benar);
+  background-color: var(--benar-latar);
+}
+
+.opsi.benar .lencana {
+  background-color: var(--benar);
+  color: #ffffff;
+}
+
+.opsi.salah {
+  border-color: var(--salah);
+  background-color: var(--salah-latar);
+}
+
+.opsi.salah .lencana {
+  background-color: var(--salah);
+  color: #ffffff;
+}
+
+/* ---------- 7. Umpan balik dan pembahasan ---------- */
+.umpan-balik {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-left: 4px solid var(--garis);
+  border-radius: 10px;
+  background-color: #f3f5fb;
+}
+
+/* Kosong = tidak tampil, jadi tidak perlu atribut hidden */
+.umpan-balik:empty {
+  display: none;
+}
+
+.umpan-balik p + p {
+  margin-top: 6px;
+}
+
+.umpan-judul {
+  font-weight: 800;
+}
+
+.umpan-balik.benar {
+  border-left-color: var(--benar);
+  background-color: var(--benar-latar);
+}
+
+.umpan-balik.benar .umpan-judul {
+  color: var(--benar);
+}
+
+.umpan-balik.salah {
+  border-left-color: var(--salah);
+  background-color: var(--salah-latar);
+}
+
+.umpan-balik.salah .umpan-judul {
+  color: var(--salah);
+}
+
+.umpan-balik.waktu {
+  border-left-color: #e0a100;
+  background-color: var(--waktu-latar);
+}
+
+.umpan-balik.waktu .umpan-judul {
+  color: var(--waktu);
+}
+
+.petunjuk {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: var(--tinta-lembut);
+}
+
+/* ---------- 8. Layar hasil ---------- */
+#layar-hasil h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  outline: none;
+}
+
+.skor-besar {
+  margin-top: 8px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+#angka-skor {
+  font-size: clamp(3.75rem, 16vw, 5.5rem);
+  letter-spacing: -0.03em;
+}
+
+.dari {
+  margin-left: 8px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--tinta-lembut);
+}
+
+.pesan-hasil {
+  margin-top: 12px;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.ulasan {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--garis);
+}
+
+.ulasan h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.daftar-ulasan {
+  display: grid;
+  gap: 14px;
+  margin-top: 12px;
+  padding-left: 22px;
+}
+
+.ulasan-pertanyaan {
+  font-weight: 700;
+}
+
+.ulasan-baris {
+  margin-top: 2px;
+  font-size: 0.95rem;
+  color: var(--tinta-lembut);
+}
+
+.ulasan-baris strong {
+  color: var(--tinta);
+}
+
+/* ---------- 9. Responsif dan aksesibilitas ---------- */
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .opsi {
+    gap: 12px;
+    padding: 12px;
+  }
+}
+
+/* Hormati pengguna yang mematikan animasi di perangkatnya */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

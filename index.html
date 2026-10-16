@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kuis Dasar HTML dan CSS</title>
+
+  <!-- Font dari Google Fonts (butuh internet). Jika offline, browser memakai font cadangan. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="kartu">
+
+    <!-- Garis waktu di tepi atas kartu, hanya tampil saat kuis berlangsung -->
+    <div id="jalur-waktu" class="jalur-waktu" aria-hidden="true" hidden>
+      <div id="isi-waktu" class="isi-waktu"></div>
+    </div>
+
+    <!-- Layar 1: halaman awal -->
+    <section id="layar-mulai" class="layar" aria-labelledby="judul-mulai">
+      <h1 id="judul-mulai">Kuis dasar HTML dan CSS</h1>
+      <p class="pengantar">
+        Uji pemahamanmu tentang tag, atribut, dan properti yang paling sering dipakai
+        saat membuat halaman web.
+      </p>
+      <ul class="info">
+        <li>10 soal pilihan ganda</li>
+        <li>20 detik untuk setiap soal</li>
+        <li>Urutan soal dan pilihan diacak setiap kali main</li>
+      </ul>
+      <p id="skor-terbaik-mulai" class="catatan" hidden></p>
+      <button id="tombol-mulai" class="tombol" type="button">Mulai kuis</button>
+    </section>
+
+    <!-- Layar 2: soal -->
+    <section id="layar-kuis" class="layar" aria-label="Soal kuis" hidden>
+      <header class="kepala-soal">
+        <p id="nomor-soal" class="nomor-soal"></p>
+        <p id="sisa-waktu" class="sisa-waktu"></p>
+      </header>
+
+      <!-- Satu kotak kecil per soal: hijau = benar, merah = salah, kuning = waktu habis -->
+      <div id="segmen" class="segmen" aria-hidden="true"></div>
+
+      <h2 id="pertanyaan" class="pertanyaan"></h2>
+      <div id="pilihan" class="pilihan" role="group" aria-labelledby="pertanyaan"></div>
+
+      <!-- Penjelasan jawaban. Dibaca otomatis oleh pembaca layar saat terisi. -->
+      <div id="umpan-balik" class="umpan-balik" aria-live="polite"></div>
+
+      <button id="tombol-lanjut" class="tombol" type="button" hidden>Soal berikutnya</button>
+      <p class="petunjuk">Tekan angka 1 sampai 4 untuk memilih, Enter untuk lanjut.</p>
+    </section>
+
+    <!-- Layar 3: hasil akhir -->
+    <section id="layar-hasil" class="layar" aria-labelledby="judul-hasil" hidden>
+      <h2 id="judul-hasil" tabindex="-1">Kuis selesai</h2>
+      <p class="skor-besar">
+        <span id="angka-skor"></span><span id="total-skor" class="dari"></span>
+      </p>
+      <p id="pesan-hasil" class="pesan-hasil"></p>
+      <p id="info-terbaik" class="catatan"></p>
+
+      <div id="bagian-ulasan" class="ulasan">
+        <h3>Soal yang perlu diulang</h3>
+        <ol id="daftar-ulasan" class="daftar-ulasan"></ol>
+      </div>
+
+      <button id="tombol-ulang" class="tombol" type="button">Main lagi</button>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
